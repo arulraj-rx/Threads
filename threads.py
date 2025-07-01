@@ -39,17 +39,33 @@ class DropboxToThreadsUploader:
         else:
             self.telegram_bot = None
         self.start_time = time.time()
+        self.log_buffer = []  # Buffer for log messages
 
-    def send_message(self, msg, level=logging.INFO):
+    def send_message(self, msg, level=logging.INFO, immediate=False):
         full_msg = f"[{self.account_name}] [{self.script_name}]\n" + msg
-        try:
+        self.log_buffer.append(full_msg)
+        self.logger.log(level, full_msg)
+        # Only send immediately if requested (e.g., for critical errors)
+        if immediate:
             if self.telegram_bot is not None:
-                self.telegram_bot.send_message(chat_id=self.telegram_chat_id, text=full_msg)
+                try:
+                    self.telegram_bot.send_message(chat_id=self.telegram_chat_id, text=full_msg)
+                except Exception as e:
+                    self.logger.error(f"Telegram send error: {e}")
             else:
                 self.logger.warning("Telegram bot is not configured. Message not sent to Telegram.")
-            self.logger.log(level, full_msg)
-        except Exception as e:
-            self.logger.error(f"Telegram send error: {e}")
+
+    def send_log_summary(self):
+        if self.telegram_bot is not None and self.log_buffer:
+            summary = '\n'.join(self.log_buffer)
+            # Telegram messages have a max length; split if needed
+            max_len = 4000
+            for i in range(0, len(summary), max_len):
+                try:
+                    self.telegram_bot.send_message(chat_id=self.telegram_chat_id, text=summary[i:i+max_len])
+                except Exception as e:
+                    self.logger.error(f"Telegram send error: {e}")
+        self.log_buffer = []
 
     def refresh_dropbox_token(self):
         data = {
@@ -108,16 +124,20 @@ class DropboxToThreadsUploader:
             if not creation_id:
                 self.send_message(f"❌ No creation_id returned for {file.name}", level=logging.ERROR)
                 return False
-            # Step 2: Poll status
-            status_url = f"{self.THREADS_API_BASE}/{creation_id}"
-            while True:
-                poll_res = requests.get(status_url, params={"access_token": self.threads_access_token})
+            # Step 2: Poll status until fully processed
+            max_retries = 20
+            for _ in range(max_retries):
+                poll_res = requests.get(f"{self.THREADS_API_BASE}/{creation_id}", params={"access_token": self.threads_access_token})
                 if poll_res.status_code != 200:
                     self.send_message(f"❌ Polling failed for {file.name}: {poll_res.text}", level=logging.ERROR)
                     return False
                 status = poll_res.json().get("status")
                 if status == "FINISHED":
+                    time.sleep(3)  # Give time for backend to finalize video
                     break
+                elif status == "ERROR":
+                    self.send_message(f"❌ Transcode failed for {file.name}: {poll_res.text}", level=logging.ERROR)
+                    return False
                 time.sleep(1)
             # Step 3: Publish
             publish_url = f"{self.THREADS_API_BASE}/{self.threads_user_id}/threads_publish"
@@ -169,6 +189,7 @@ class DropboxToThreadsUploader:
         finally:
             duration = time.time() - self.start_time
             self.send_message(f"🏁 Run complete in {duration:.1f} seconds")
+            self.send_log_summary()
 
 # --- Multi-account logic ---
 
@@ -202,7 +223,70 @@ ACCOUNTS = [
     }
 ]
 
+def send_overall_summary(summary_lines, telegram_bot_token, telegram_chat_id):
+    logger = logging.getLogger()
+    summary = '[Threads Multi-Account Summary]\n' + '\n'.join(summary_lines)
+    logger.info(summary)
+    try:
+        bot = Bot(token=telegram_bot_token)
+        max_len = 4000
+        for i in range(0, len(summary), max_len):
+            bot.send_message(chat_id=telegram_chat_id, text=summary[i:i+max_len])
+    except Exception as e:
+        logger.error(f"Telegram send error (overall summary): {e}")
+
 if __name__ == "__main__":
+    overall_summary = []
+    telegram_bot_token = os.getenv("TELEGRAM_BOT_TOKEN")
+    telegram_chat_id = os.getenv("TELEGRAM_CHAT_ID")
     for account in ACCOUNTS:
         uploader = DropboxToThreadsUploader(**account)
-        uploader.run()
+        # Get initial file count
+        try:
+            dbx = uploader.authenticate_dropbox()
+            files = uploader.list_dropbox_files(dbx)
+            initial_count = len(files)
+        except Exception as e:
+            initial_count = 'ERR'
+            files = []
+        posted_file = None
+        post_success = False
+        if files:
+            # Pick the file that will be posted (randomly, as in run)
+            posted_file = random.choice(files)
+            # Monkey-patch uploader.run to use the chosen file
+            def run_with_file(self, chosen_file):
+                self.send_message(f"📡 Threads Run started at: {datetime.now(self.ist).strftime('%Y-%m-%d %H:%M:%S')}")
+                try:
+                    caption = self.get_caption_from_config()
+                    dbx = self.authenticate_dropbox()
+                    success = self.post_to_threads(dbx, chosen_file, caption)
+                    try:
+                        dbx.files_delete_v2(chosen_file.path_lower)
+                        self.send_message(f"🗑️ Deleted file after attempt: {chosen_file.name}")
+                    except Exception as e:
+                        self.send_message(f"⚠️ Failed to delete file {chosen_file.name}: {e}", level=logging.WARNING)
+                    return success, chosen_file.name
+                except Exception as e:
+                    self.send_message(f"❌ Script crashed: {e}", level=logging.ERROR)
+                    return False, None
+                finally:
+                    duration = time.time() - self.start_time
+                    self.send_message(f"🏁 Run complete in {duration:.1f} seconds")
+                    self.send_log_summary()
+            # Run and get result
+            post_success, posted_file_name = run_with_file(uploader, posted_file)
+        else:
+            uploader.run()  # Will log no files found
+            posted_file_name = None
+        # Build summary line
+        if initial_count == 'ERR':
+            summary_line = f"{account['account_name']}: Dropbox error, could not count files."
+        elif posted_file_name:
+            status = '✅ Success' if post_success else '❌ Failed'
+            summary_line = f"{account['account_name']}: {initial_count} files, posted: {posted_file_name}, {status}"
+        else:
+            summary_line = f"{account['account_name']}: {initial_count} files, no file posted."
+        overall_summary.append(summary_line)
+    # Send overall summary
+    send_overall_summary(overall_summary, telegram_bot_token, telegram_chat_id)
