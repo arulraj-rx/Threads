@@ -46,4 +46,4 @@ jobs:
           pip install dropbox python-telegram-bot requests pytz
 
       - name: Run Dropbox to Threads script
-        run: python "test 6.py"
+        run: python "threads.py"
