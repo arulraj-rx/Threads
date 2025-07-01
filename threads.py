@@ -7,6 +7,7 @@ import dropbox
 from telegram import Bot
 from datetime import datetime
 from pytz import timezone
+import random
 
 class DropboxToThreadsUploader:
     DROPBOX_TOKEN_URL = "https://api.dropbox.com/oauth2/token"
@@ -24,7 +25,7 @@ class DropboxToThreadsUploader:
         self.logger = logging.getLogger()
 
         # Account-specific secrets
-        self.threads_access_token = threads_access_token
+        self.threads_access_token = threads_access_token.strip() if threads_access_token else None
         self.threads_user_id = threads_user_id
         self.dropbox_app_key = dropbox_app_key
         self.dropbox_app_secret = dropbox_app_secret
@@ -120,7 +121,7 @@ class DropboxToThreadsUploader:
                 self.send_message("📭 No files found in Dropbox folder.")
                 return
 
-            file = files[0]  # Only post one file per run
+            file = random.choice(files)  # Pick a random file to post
             success = self.post_to_threads(dbx, file, caption)
             try:
                 dbx.files_delete_v2(file.path_lower)
