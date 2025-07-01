@@ -99,16 +99,48 @@ class DropboxToThreadsUploader:
             else:
                 data["image_url"] = temp_link
                 data["media_type"] = "IMAGE"
+            # Step 1: Create media container
+            res = requests.post(post_url, data=data)
+            if res.status_code != 200:
+                self.send_message(f"❌ Threads media container creation failed: {file.name}\n{res.text}", level=logging.ERROR)
+                return False
+            creation_id = res.json().get("id")
+            if not creation_id:
+                self.send_message(f"❌ No creation_id returned for {file.name}", level=logging.ERROR)
+                return False
+            # Step 2: Poll status
+            status_url = f"{self.THREADS_API_BASE}/{creation_id}"
+            while True:
+                poll_res = requests.get(status_url, params={"access_token": self.threads_access_token})
+                if poll_res.status_code != 200:
+                    self.send_message(f"❌ Polling failed for {file.name}: {poll_res.text}", level=logging.ERROR)
+                    return False
+                status = poll_res.json().get("status")
+                if status == "FINISHED":
+                    break
+                time.sleep(1)
+            # Step 3: Publish
+            publish_url = f"{self.THREADS_API_BASE}/{self.threads_user_id}/threads_publish"
+            publish_data = {
+                "access_token": self.threads_access_token,
+                "creation_id": creation_id
+            }
+            pub_res = requests.post(publish_url, data=publish_data)
+            if pub_res.status_code == 200:
+                self.send_message(f"✅ Successfully posted to Threads: {file.name}")
+                return True
+            else:
+                self.send_message(f"❌ Threads publish failed: {file.name}\n{pub_res.text}", level=logging.ERROR)
+                return False
         else:
             data["media_type"] = "TEXT_POST"
-
-        res = requests.post(post_url, data=data)
-        if res.status_code == 200:
-            self.send_message(f"✅ Successfully posted to Threads: {file.name}")
-            return True
-        else:
-            self.send_message(f"❌ Threads post failed: {file.name}\n{res.text}", level=logging.ERROR)
-            return False
+            res = requests.post(post_url, data=data)
+            if res.status_code == 200:
+                self.send_message(f"✅ Successfully posted to Threads: {file.name}")
+                return True
+            else:
+                self.send_message(f"❌ Threads post failed: {file.name}\n{res.text}", level=logging.ERROR)
+                return False
 
     def authenticate_dropbox(self):
         access_token = self.refresh_dropbox_token()
