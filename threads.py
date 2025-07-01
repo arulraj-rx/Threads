@@ -11,7 +11,7 @@ import random
 
 class DropboxToThreadsUploader:
     DROPBOX_TOKEN_URL = "https://api.dropbox.com/oauth2/token"
-    THREADS_API_BASE = "https://graph.facebook.com/v18.0"
+    THREADS_API_BASE = "https://graph.threads.net/v1.0"
 
     def __init__(self, account_name, threads_user_id, threads_access_token, dropbox_app_key, dropbox_app_secret, dropbox_refresh_token, dropbox_folder, telegram_bot_token=None, telegram_chat_id=None, schedule_file="caption/config.json"):
         self.account_name = account_name
@@ -92,12 +92,15 @@ class DropboxToThreadsUploader:
             "text": caption,
         }
 
-        if media_type == "VIDEO":
-            data["video_url"] = temp_link
-            data["media_type"] = "VIDEO"
+        if temp_link:
+            if media_type == "VIDEO":
+                data["video_url"] = temp_link
+                data["media_type"] = "VIDEO"
+            else:
+                data["image_url"] = temp_link
+                data["media_type"] = "IMAGE"
         else:
-            data["image_url"] = temp_link
-            data["media_type"] = "IMAGE"
+            data["media_type"] = "TEXT_POST"
 
         res = requests.post(post_url, data=data)
         if res.status_code == 200:
