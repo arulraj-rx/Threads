@@ -1,0 +1,29 @@
+{
+  "eclipsed.by.you": {
+    "Monday": { "caption": "#Threads" },
+    "Tuesday": { "caption": "#Threads" },
+    "Wednesday": { "caption": "#Threads" },
+    "Thursday": { "caption": "#Threads" },
+    "Friday": { "caption": "#Threads" },
+    "Saturday": { "caption": "#Threads" },
+    "Sunday": { "caption": "#Threads" }
+  },
+  "inkwisp": {
+    "Monday": { "caption": "#Threads" },
+    "Tuesday": { "caption": "#Threads" },
+    "Wednesday": { "caption": "#Threads" },
+    "Thursday": { "caption": "#Threads" },
+    "Friday": { "caption": "#Threads" },
+    "Saturday": { "caption": "#Threads" },
+    "Sunday": { "caption": "#Threads" }
+  },
+  "ink_wisps": {
+    "Monday": { "caption": "#Threads" },
+    "Tuesday": { "caption": "#Threads" },
+    "Wednesday": { "caption": "#Threads" },
+    "Thursday": { "caption": "#Threads" },
+    "Friday": { "caption": "#Threads" },
+    "Saturday": { "caption": "#Threads" },
+    "Sunday": { "caption": "#Threads" }
+  }
+}
