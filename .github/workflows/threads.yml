@@ -3,7 +3,11 @@ name: Dropbox to Threads Multi-Account
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 5 * * *'  # Runs every day at 5:00 UTC
+    - cron: '30 19 * * *'  # 01:00 AM IST (previous day UTC)
+    - cron: '30 1 * * *'   # 07:00 AM IST
+    - cron: '30 7 * * *'   # 01:00 PM IST
+    - cron: '30 13 * * *'  # 07:00 PM IST
+
 
 jobs:
   post-to-threads:
