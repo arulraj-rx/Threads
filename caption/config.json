@@ -1,29 +1,29 @@
 {
   "eclipsed.by.you": {
-    "Monday": { "caption": "#Threads" },
-    "Tuesday": { "caption": "#Threads" },
-    "Wednesday": { "caption": "#Threads" },
-    "Thursday": { "caption": "#Threads" },
-    "Friday": { "caption": "#Threads" },
-    "Saturday": { "caption": "#Threads" },
-    "Sunday": { "caption": "#Threads" }
+    "Monday": { "caption": "#threads" },
+    "Tuesday": { "caption": "#Lyrics" },
+    "Wednesday": { "caption": "#MusicVibes" },
+    "Thursday": { "caption": "#love" },
+    "Friday": { "caption": "#SongOfTheDay" },
+    "Saturday": { "caption": "#SadSongs" },
+    "Sunday": { "caption": "#relatable" }
   },
   "inkwisp": {
-    "Monday": { "caption": "#quotes #Threads" },
-    "Tuesday": { "caption": "#quotes #Threads" },
-    "Wednesday": { "caption": "#quotes #Threads" },
-    "Thursday": { "caption": "#quotes #Threads" },
-    "Friday": { "caption": "#quotes #Threads" },
-    "Saturday": { "caption": "#quotes #Threads" },
-    "Sunday": { "caption": "#quotes #Threads" }
+    "Monday": { "caption": "#QuoteOfTheDay" },
+    "Tuesday": { "caption": "#DeepThoughts" },
+    "Wednesday": { "caption": "#threads" },
+    "Thursday": { "caption": "#quotes" },
+    "Friday": { "caption": "#relationship" },
+    "Saturday": { "caption": "#WritersOfThreads" },
+    "Sunday": { "caption": "#love" }
   },
   "ink_wisps": {
-    "Monday": { "caption": "#memes #Threads" },
-    "Tuesday": { "caption": "#memes  #Threads" },
-    "Wednesday": { "caption": "#memes #Threads" },
-    "Thursday": { "caption": "#memes #Threads" },
-    "Friday": { "caption": "#memes #Threads" },
-    "Saturday": { "caption": "#memes #Threads" },
-    "Sunday": { "caption": "#memes #Threads" }
+    "Monday": { "caption": "#memes" },
+    "Tuesday": { "caption": "#RelatableMemes" },
+    "Wednesday": { "caption": "#funny" },
+    "Thursday": { "caption": "#comedy" },
+    "Friday": { "caption": "#threads" },
+    "Saturday": { "caption": "#DankMemes" },
+    "Sunday": { "caption": "#trending" }
   }
 }
