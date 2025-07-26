@@ -3,10 +3,14 @@ name: Dropbox to Threads Multi-Account
 on:
   workflow_dispatch:
   schedule:
-    - cron: '30 19 * * *'  # 01:00 AM IST (previous day UTC)
-    - cron: '30 1 * * *'   # 07:00 AM IST
-    - cron: '30 7 * * *'   # 01:00 PM IST
-    - cron: '30 13 * * *'  # 07:00 PM IST
+  - cron: '30 19 * * *'  # 01:00 AM IST
+  - cron: '30 1 * * *'   # 07:00 AM IST
+  - cron: '30 4 * * *'   # 09:30 AM IST
+  - cron: '30 7 * * *'   # 01:00 PM IST
+  - cron: '30 10 * * *'  # 03:30 PM IST
+  - cron: '30 13 * * *'  # 07:00 PM IST
+  - cron: '30 16 * * *'  # 09:30 PM IST
+  - cron: '30 22 * * *'  # 03:30 AM IST (next day)
 
 
 jobs:
