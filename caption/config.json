@@ -1,29 +1,29 @@
 {
   "eclipsed.by.you": {
-    "Monday": { "caption": "#threads" },
-    "Tuesday": { "caption": "#Lyrics" },
-    "Wednesday": { "caption": "#MusicVibes" },
-    "Thursday": { "caption": "#love" },
-    "Friday": { "caption": "#SongOfTheDay" },
-    "Saturday": { "caption": "#SadSongs" },
-    "Sunday": { "caption": "#relatable" }
+    "Monday": { "caption": "#threads\nIf you're not following me, then we'll never meet again!" },
+    "Tuesday": { "caption": "#Lyrics\nIf you're not following me, then we'll never meet again!" },
+    "Wednesday": { "caption": "#MusicVibes\nIf you're not following me, then we'll never meet again!" },
+    "Thursday": { "caption": "#love\nIf you're not following me, then we'll never meet again!" },
+    "Friday": { "caption": "#SongOfTheDay\nIf you're not following me, then we'll never meet again!" },
+    "Saturday": { "caption": "#SadSongs\nIf you're not following me, then we'll never meet again!" },
+    "Sunday": { "caption": "#relatable\nIf you're not following me, then we'll never meet again!" }
   },
   "inkwisp": {
-    "Monday": { "caption": "#QuoteOfTheDay" },
-    "Tuesday": { "caption": "#DeepThoughts" },
-    "Wednesday": { "caption": "#threads" },
-    "Thursday": { "caption": "#quotes" },
-    "Friday": { "caption": "#relationship" },
-    "Saturday": { "caption": "#WritersOfThreads" },
-    "Sunday": { "caption": "#love" }
+    "Monday": { "caption": "#threadsquotes\nIf you're not following me, then we'll never meet again!" },
+    "Tuesday": { "caption": "#DeepThoughts\nIf you're not following me, then we'll never meet again!" },
+    "Wednesday": { "caption": "#threads\nIf you're not following me, then we'll never meet again!" },
+    "Thursday": { "caption": "#quotes\nIf you're not following me, then we'll never meet again!" },
+    "Friday": { "caption": "#relationship\nIf you're not following me, then we'll never meet again!" },
+    "Saturday": { "caption": "#WritersOfThreads\nIf you're not following me, then we'll never meet again!" },
+    "Sunday": { "caption": "#love\nIf you're not following me, then we'll never meet again!" }
   },
   "ink_wisps": {
-    "Monday": { "caption": "#memes" },
-    "Tuesday": { "caption": "#RelatableMemes" },
-    "Wednesday": { "caption": "#funny" },
-    "Thursday": { "caption": "#comedy" },
-    "Friday": { "caption": "#threads" },
-    "Saturday": { "caption": "#DankMemes" },
-    "Sunday": { "caption": "#trending" }
+    "Monday": { "caption": "#threads\nIf you're not following me, then we'll never meet again!" },
+    "Tuesday": { "caption": "#RelatableMemes\nIf you're not following me, then we'll never meet again!" },
+    "Wednesday": { "caption": "#funny\nIf you're not following me, then we'll never meet again!" },
+    "Thursday": { "caption": "#comedy\nIf you're not following me, then we'll never meet again!" },
+    "Friday": { "caption": "#threads\nIf you're not following me, then we'll never meet again!" },
+    "Saturday": { "caption": "#DankMemes\nIf you're not following me, then we'll never meet again!" },
+    "Sunday": { "caption": "#trending\nIf you're not following me, then we'll never meet again!" }
   }
 }
