@@ -219,11 +219,11 @@ ACCOUNTS = [
 
     {
         "account_name": "inkwisp",
-        "threads_user_id": os.getenv("THREADS_USER_ID_2"),
-        "threads_access_token": os.getenv("THREADS_ACCESS_TOKEN_2"),
-        "dropbox_app_key": os.getenv("DROPBOX_APP_KEY_2"),
-        "dropbox_app_secret": os.getenv("DROPBOX_APP_SECRET_2"),
-        "dropbox_refresh_token": os.getenv("DROPBOX_REFRESH_TOKEN_2"),
+        "threads_user_id": os.getenv("THREADS_USER_ID"),
+        "threads_access_token": os.getenv("THREADS_ACCESS_TOKEN"),
+        "dropbox_app_key": os.getenv("DROPBOX_APP_KEY"),
+        "dropbox_app_secret": os.getenv("DROPBOX_APP_SECRET"),
+        "dropbox_refresh_token": os.getenv("DROPBOX_REFRESH_TOKEN"),
         "dropbox_folder": "/threads_2",
     }
 ]
