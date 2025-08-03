@@ -216,7 +216,7 @@ class DropboxToThreadsUploader:
 # --- Multi-account logic ---
 
 ACCOUNTS = [
-  
+
     {
         "account_name": "inkwisp",
         "threads_user_id": os.getenv("THREADS_USER_ID_2"),
