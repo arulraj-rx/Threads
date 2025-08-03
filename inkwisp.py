@@ -74,9 +74,13 @@ class DropboxToThreadsUploader:
             "client_id": self.dropbox_app_key,
             "client_secret": self.dropbox_app_secret,
         }
-        r = requests.post(self.DROPBOX_TOKEN_URL, data=data)
-        r.raise_for_status()
-        return r.json().get("access_token")
+        try:
+            r = requests.post(self.DROPBOX_TOKEN_URL, data=data)
+            r.raise_for_status()
+            return r.json().get("access_token")
+        except requests.exceptions.HTTPError as e:
+            self.send_message(f"Dropbox token refresh failed: {e}\nResponse: {r.text}", level=logging.ERROR, immediate=True)
+            raise
 
     def list_dropbox_files(self, dbx):
         files = dbx.files_list_folder(self.dropbox_folder).entries
