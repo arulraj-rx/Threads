@@ -14,23 +14,12 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      THREADS_USER_ID_1: ${{ secrets.THREADS_USER_ID_1 }}
-      THREADS_ACCESS_TOKEN_1: ${{ secrets.THREADS_ACCESS_TOKEN_1 }}
-      DROPBOX_APP_KEY_1: ${{ secrets.DROPBOX_APP_KEY_1 }}
-      DROPBOX_APP_SECRET_1: ${{ secrets.DROPBOX_APP_SECRET_1 }}
-      DROPBOX_REFRESH_TOKEN_1: ${{ secrets.DROPBOX_REFRESH_TOKEN_1 }}
+      THREADS_USER_ID: ${{ secrets.THREADS_USER_ID }}
+      THREADS_ACCESS_TOKEN: ${{ secrets.THREADS_ACCESS_TOKEN }}
+      DROPBOX_APP_KEY: ${{ secrets.DROPBOX_APP_KEY }}
+      DROPBOX_APP_SECRET: ${{ secrets.DROPBOX_APP_SECRET }}
+      DROPBOX_REFRESH_TOKEN: ${{ secrets.DROPBOX_REFRESH_TOKEN }}
 
-      THREADS_USER_ID_2: ${{ secrets.THREADS_USER_ID_2 }}
-      THREADS_ACCESS_TOKEN_2: ${{ secrets.THREADS_ACCESS_TOKEN_2 }}
-      DROPBOX_APP_KEY_2: ${{ secrets.DROPBOX_APP_KEY_2 }}
-      DROPBOX_APP_SECRET_2: ${{ secrets.DROPBOX_APP_SECRET_2 }}
-      DROPBOX_REFRESH_TOKEN_2: ${{ secrets.DROPBOX_REFRESH_TOKEN_2 }}
-
-      THREADS_USER_ID_3: ${{ secrets.THREADS_USER_ID_3 }}
-      THREADS_ACCESS_TOKEN_3: ${{ secrets.THREADS_ACCESS_TOKEN_3 }}
-      DROPBOX_APP_KEY_3: ${{ secrets.DROPBOX_APP_KEY_3 }}
-      DROPBOX_APP_SECRET_3: ${{ secrets.DROPBOX_APP_SECRET_3 }}
-      DROPBOX_REFRESH_TOKEN_3: ${{ secrets.DROPBOX_REFRESH_TOKEN_3 }}
 
       TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
       TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
