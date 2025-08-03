@@ -68,15 +68,15 @@ class DropboxToThreadsUploader:
         self.log_buffer = []
 
     def refresh_dropbox_token(self):
-        data = {
-            "grant_type": "refresh_token",
-            "refresh_token": self.dropbox_refresh_token,
-            "client_id": self.dropbox_app_key,
-            "client_secret": self.dropbox_app_secret,
-        }
-        r = requests.post(self.DROPBOX_TOKEN_URL, data=data)
-        r.raise_for_status()
-        return r.json().get("access_token")
+    data = {
+        "grant_type": "refresh_token",
+        "refresh_token": self.dropbox_refresh_token,
+    }
+    auth = (self.dropbox_app_key, self.dropbox_app_secret)
+    r = requests.post(self.DROPBOX_TOKEN_URL, data=data, auth=auth)
+    r.raise_for_status()
+    return r.json().get("access_token")
+
 
     def list_dropbox_files(self, dbx):
         files = dbx.files_list_folder(self.dropbox_folder).entries
