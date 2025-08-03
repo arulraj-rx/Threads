@@ -74,18 +74,22 @@ class DropboxToThreadsUploader:
             "client_id": self.dropbox_app_key,
             "client_secret": self.dropbox_app_secret,
         }
-        try:
-            r = requests.post(self.DROPBOX_TOKEN_URL, data=data)
-            r.raise_for_status()
-            return r.json().get("access_token")
-        except requests.exceptions.HTTPError as e:
-            self.send_message(f"Dropbox token refresh failed: {e}\nResponse: {r.text}", level=logging.ERROR, immediate=True)
-            raise
+        r = requests.post(self.DROPBOX_TOKEN_URL, data=data)
+        r.raise_for_status()
+        return r.json().get("access_token")
 
     def list_dropbox_files(self, dbx):
-        files = dbx.files_list_folder(self.dropbox_folder).entries
         valid_exts = ('.mp4', '.mov', '.jpg', '.jpeg', '.png')
-        return [f for f in files if f.name.lower().endswith(valid_exts)]
+        files = []
+        try:
+            result = dbx.files_list_folder(self.dropbox_folder)
+            files.extend([f for f in result.entries if f.name.lower().endswith(valid_exts)])
+            while result.has_more:
+                result = dbx.files_list_folder_continue(result.cursor)
+                files.extend([f for f in result.entries if f.name.lower().endswith(valid_exts)])
+        except Exception as e:
+            self.send_message(f"❌ Dropbox list error: {e}", level=logging.ERROR)
+        return files
 
     def get_caption_from_config(self):
         try:
